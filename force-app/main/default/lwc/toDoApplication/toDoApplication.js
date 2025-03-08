@@ -36,6 +36,7 @@ export default class ToDoApplication extends LightningElement {
     }
 
     validateTask(){
+        let element = this.template.querySelector(".taskname")
         let isValid = true;
         if(!this.taskName){
             isValid = false;
