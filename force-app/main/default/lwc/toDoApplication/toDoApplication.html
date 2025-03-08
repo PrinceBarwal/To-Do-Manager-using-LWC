@@ -4,7 +4,21 @@
             <lightning-card
                 title="Task">
                 <div class="slds-var-p-around_small">
-                    <lightning-input label="Enter Task" placeholder="Enter Task Details"></lightning-input>
+                    <lightning-input
+                        label="Enter Task"
+                        placeholder="Enter Task Details"
+                        required="true"
+                        message-when-step-mismatch="Kindlt Enter the Task Name"
+                        onchange={changeHandler}
+                        name="taskName"
+                    ></lightning-input>
+                    <lightning-input
+                        type="date"
+                        label="Set End Date"
+                        field-level-help = "Default End Date is Today's Date"
+                        onchange={changeHandler}
+                        name="taskDate"
+                    ></lightning-input>
                 </div>
             </lightning-card>
         </div>
