@@ -4,6 +4,8 @@ export default class ToDoApplication extends LightningElement {
 
     taskName = "";
     taskDate = null;
+    incompleteTask = [];
+    completedTask = [];
 
     changeHandler(event){
         let {name, value} = event.target;
@@ -12,6 +14,40 @@ export default class ToDoApplication extends LightningElement {
         }
         else if(name === "taskDate"){
             this.taskDate = value;
+        }
+    }
+
+    resetHandler(){
+        this.taskName = "";
+        this.taskData = null;
+    }
+
+    addTaskHandler(){
+        if(!this.taskData){
+            this.taskData = new Date().toISOString().slice(0,10);
+        }
+
+        if(this.validateTask()){
+            this.incompleteTask = [...this.incompleteTask, {
+                taskName : this.taskName,
+                taskDate : this.taskData
+            }];
+        }
+    }
+
+    validateTask(){
+        let isValid = true;
+        if(!this.taskName){
+            isValid = false;
+        }else{
+            let taskItem = this.incompleteTask.find(
+                (currItem) => 
+                currItem.taskName === this.taskName && 
+                currItem.taskDate === this.taskDate
+            );
+            if(taskItem){
+                isValid = false;
+            }
         }
     }
 }

@@ -11,6 +11,7 @@
                         message-when-step-mismatch="Kindlt Enter the Task Name"
                         onchange={changeHandler}
                         name="taskName"
+                        value={taskName}
                     ></lightning-input>
                     <lightning-input
                         type="date"
@@ -18,7 +19,22 @@
                         field-level-help = "Default End Date is Today's Date"
                         onchange={changeHandler}
                         name="taskDate"
+                        value={taskData}
                     ></lightning-input>
+                </div>
+                <div class="slds-var-p-around_small">
+                    <lightning-button
+                        label="Reset"
+                        variant="brand"
+                        onclick={resetHandler}
+                        class="slds-var-p-around_small"
+                    ></lightning-button>
+                    <lightning-button
+                        label="Add Task"
+                        variant="brand"
+                        onclick={addTaskHandler}
+                        class="slds-var-p-around_small"
+                    ></lightning-button>
                 </div>
             </lightning-card>
         </div>
