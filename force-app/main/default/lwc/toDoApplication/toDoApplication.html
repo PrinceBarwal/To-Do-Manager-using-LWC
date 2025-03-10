@@ -21,41 +21,23 @@
         <div class="slds-col">
             <lightning-card title="To Do List">
                 <div class="slds-var-p-around_small">
-                    <template 
-                    for:each={incompleteTask} 
-                    for:item="currTask"
-                    for:index="index">
+                    <template for:each={incompleteTask} for:item="currTask" for:index="index">
                         <div key={currTask.taskName} class="slds-box slds-theme_shade incomplete">
                             <div class="slds-grid slds-wrap">
                                 <div class="slds-col slds-size_8-of-12">
                                     <p class="formatTaskName">{currTask.taskName}</p>
                                     <p>
-                                        <lightning-formatted-date-time 
-                                            value={currTask.taskDate}
-                                            year="2-digit" 
-                                            month="short" 
-                                            day="2-digit" 
-                                            weekday="long"
-                                        ></lightning-formatted-date-time>
+                                        <lightning-formatted-date-time value={currTask.taskDate} year="2-digit"
+                                            month="short" day="2-digit" weekday="long"></lightning-formatted-date-time>
                                     </p>
                                 </div>
                                 <div class="slds-col slds-size_4-of-12">
-                                    <lightning-button-icon 
-                                        icon-name="utility:delete"     
-                                        alternative-text="Delete"   
-                                        class="slds-m-left_xx-small"
-                                        title="Delete"
-                                        onclick={removalHandler}
-                                        name = {index}
-                                    ></lightning-button-icon>
-                                    <lightning-button-icon 
-                                        icon-name="utility:check"     
-                                        alternative-text="Complete"   
-                                        class="slds-m-left_xx-small"
-                                        title="Delete"
-                                        onclick={completeTaskHandler}
-                                        name = {index}
-                                    ></lightning-button-icon> 
+                                    <lightning-button-icon icon-name="utility:delete" alternative-text="Delete"
+                                        class="slds-m-left_xx-small" title="Delete" onclick={removalHandler}
+                                        name={index}></lightning-button-icon>
+                                    <lightning-button-icon icon-name="utility:check" alternative-text="Complete"
+                                        class="slds-m-left_xx-small" title="Delete" onclick={completeTaskHandler}
+                                        name={index}></lightning-button-icon>
                                 </div>
                             </div>
                         </div>
@@ -64,7 +46,21 @@
             </lightning-card>
         </div>
         <div class="slds-col">
-            <lightning-card title="Completed"></lightning-card>
+            <lightning-card title="Completed">
+                <div class="slds-var-p-around_small">
+                    <template for:each={completedTask} for:item="currTask">
+                        <div key={currTask.taskName} class="slds-box slds-theme_shade complete">
+                            <div>
+                                <p class="formatTaskName">{currTask.taskName}</p>
+                                <p>
+                                    <lightning-formatted-date-time value={currTask.taskDate} year="2-digit"
+                                        month="short" day="2-digit" weekday="long"></lightning-formatted-date-time>
+                                </p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </lightning-card>
         </div>
     </div>
 </template>
