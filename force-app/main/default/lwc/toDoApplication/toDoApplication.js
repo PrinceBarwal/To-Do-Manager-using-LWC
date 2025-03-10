@@ -48,7 +48,13 @@ export default class ToDoApplication extends LightningElement {
             );
             if(taskItem){
                 isValid = false;
+                element.setCustomValidity("Task is Already Present.")
             }
         }
+        if(isValid){
+            element.setCustomValidity("");
+        }
+        element.reportValidity();
+        return isValid;
     }
 }
