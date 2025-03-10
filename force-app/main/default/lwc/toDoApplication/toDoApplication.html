@@ -22,7 +22,12 @@
             <lightning-card title="To Do List">
                 <div class="slds-var-p-around_small">
                     <template for:each={incompleteTask} for:item="currTask" for:index="index">
-                        <div key={currTask.taskName} class="slds-box slds-theme_shade incomplete">
+                        <div 
+                        key={currTask.taskName} 
+                        class="slds-box slds-theme_shade incomplete"
+                        draggable="true"
+                        ondragstart={dragStartHandler}
+                        data-item = {index}>
                             <div class="slds-grid slds-wrap">
                                 <div class="slds-col slds-size_8-of-12">
                                     <p class="formatTaskName">{currTask.taskName}</p>
@@ -47,7 +52,9 @@
         </div>
         <div class="slds-col">
             <lightning-card title="Completed">
-                <div class="slds-var-p-around_small">
+                <div class="slds-var-p-around_small"
+                    ondragover={allowDrop}
+                    ondrop={dropElementHandler}>
                     <template for:each={completedTask} for:item="currTask">
                         <div key={currTask.taskName} class="slds-box slds-theme_shade complete">
                             <div>

@@ -81,6 +81,24 @@ export default class ToDoApplication extends LightningElement {
 
     completeTaskHandler(event){
         let index = event.target.name;
+        this.refreshData(index);
+        
+    }
+
+    dragStartHandler(event){
+        event.dataTransfer.setData("index", event.target.dataset.item)
+    }
+
+    allowDrop(event){
+        event.preventDefault();
+    }
+
+    dropElementHandler(event){
+        let index = event.dataTransfer.getData("index");
+        this.refreshData(index);
+    }
+
+    refreshData(index){
         let removeItem = this.incompleteTask.splice(index, 1);
         let sortedArray = this.sortArray(this.incompleteTask);
         this.incompleteTask = [...sortedArray];
