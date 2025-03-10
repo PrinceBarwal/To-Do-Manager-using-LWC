@@ -19,18 +19,18 @@ export default class ToDoApplication extends LightningElement {
 
     resetHandler(){
         this.taskName = "";
-        this.taskData = null;
+        this.taskDate = null;
     }
 
     addTaskHandler(){
-        if(!this.taskData){
-            this.taskData = new Date().toISOString().slice(0,10);
+        if(!this.taskDate){
+            this.taskDate = new Date().toISOString().slice(0,10);
         }
 
         if(this.validateTask()){
             this.incompleteTask = [...this.incompleteTask, {
                 taskName : this.taskName,
-                taskDate : this.taskData
+                taskDate : this.taskDate
             }];
             this.resetHandler();
             let sortedArray = this.sortArray(this.incompleteTask);
@@ -64,7 +64,7 @@ export default class ToDoApplication extends LightningElement {
 
     sortArray(inputArr){
         let sortedArray = inputArr.sort((a,b) => {
-            let dateA = new Date(a.taskData);
+            let dateA = new Date(a.taskDate);
             let dateB = new Date(b.taskDate);
             return dateA - dateB;
         })
