@@ -32,6 +32,7 @@ export default class ToDoApplication extends LightningElement {
                 taskName : this.taskName,
                 taskDate : this.taskData
             }];
+            this.resetHandler();
         }
     }
 
