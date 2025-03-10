@@ -1,0 +1,11 @@
+.incomplete{
+    background-color: #faf59b;
+}
+
+.complete{
+    background-color: #aafac3;
+}
+
+.formatTaskName{ 
+    font-size: larger;
+}

@@ -35,7 +35,7 @@ export default class ToDoApplication extends LightningElement {
             this.resetHandler();
             let sortedArray = this.sortArray(this.incompleteTask);
             this.incompleteTask = [...sortedArray];
-            console.log("this.incompleteTask", this.incompleteTask);
+            //console.log("this.incompleteTask", this.incompleteTask);
         }
     }
 
@@ -69,5 +69,22 @@ export default class ToDoApplication extends LightningElement {
             return dateA - dateB;
         })
         return sortedArray;
+    }
+
+    removalHandler(event){
+        let index = event.target.name;
+        this.incompleteTask.splice(index, 1);
+        let sortedArray = this.sortArray(this.incompleteTask);
+        this.incompleteTask = [...sortedArray];
+        //console.log("this.incompleteTask", this.incompleteTask);
+    }
+
+    completeTaskHandler(event){
+        let index = event.target.name;
+        let removeItem = this.incompleteTask.splice(index, 1);
+        let sortedArray = this.sortArray(this.incompleteTask);
+        this.incompleteTask = [...sortedArray];
+        //console.log("this.incompleteTask", this.incompleteTask);
+        this.completedTask = [...this.completedTask, removeItem[0]];
     }
 }
