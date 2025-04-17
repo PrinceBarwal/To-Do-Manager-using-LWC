@@ -1,4 +1,4 @@
-import { createRecord } from 'lightning/uiRecordApi';
+import { createRecord, deleteRecord } from 'lightning/uiRecordApi';
 import { LightningElement, wire } from 'lwc';
 import TASK_MANAGER_OBJECT from '@salesforce/schema/Task_Manager__c';
 import TASK_MANAGER_NAME from '@salesforce/schema/Task_Manager__c.Name';
@@ -8,7 +8,7 @@ import TASK_IS_COMPLETED from '@salesforce/schema/Task_Manager__c.isCompleted__c
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import loadAllInCompletedTask from '@salesforce/apex/toDoAppController.loadAllInCompletedTask'
 import loadAllCompletedTask from '@salesforce/apex/toDoAppController.loadAllCompletedTask'
-
+import {refreshApex} from '@salesforce/apex';
 
 export default class ToDoApplication extends LightningElement {
 
@@ -16,10 +16,14 @@ export default class ToDoApplication extends LightningElement {
     taskDate = null;
     incompleteTask = [];
     completedTask = [];
+    incompleteTaskResult;
+    completeTaskResult;
 
 
     @wire(loadAllInCompletedTask)
-    wire_inCompleteRecord({data, error}){
+    wire_inCompleteRecord(result){
+        this.incompleteTaskResult = result;
+        let {data, error} = result;
         if(data){
             console.log('incompleted Record : ', data);
             this.incompleteTask = data.map(currItem => ({
@@ -34,7 +38,9 @@ export default class ToDoApplication extends LightningElement {
     }
 
     @wire(loadAllCompletedTask)
-    wire_completedRecord({data, error}){
+    wire_completedRecord(result){
+        this.completeTaskResult = result;
+        let {data, error} = result;
         if(data){
             console.log('All Completed Task Record', data);
             this.completedTask = data.map(currItem => ({
@@ -94,6 +100,7 @@ export default class ToDoApplication extends LightningElement {
             console.log('Task Created Successfully', result);
             this.showToast('Success', 'Task Manager Record Created Successfully', 'success');
             this.resetHandler();
+            refreshApex(this.incompleteTaskResult);
         })
         .catch(error => {
             //alert('inside catch method');
@@ -135,11 +142,23 @@ export default class ToDoApplication extends LightningElement {
     }
 
     removalHandler(event){
-        let index = event.target.name;
-        this.incompleteTask.splice(index, 1);
-        let sortedArray = this.sortArray(this.incompleteTask);
-        this.incompleteTask = [...sortedArray];
+        let recordId = event.target.name;
+        // let index = event.target.name;
+        // this.incompleteTask.splice(index, 1);
+        // let sortedArray = this.sortArray(this.incompleteTask);
+        // this.incompleteTask = [...sortedArray];
         //console.log("this.incompleteTask", this.incompleteTask);
+
+        console.log('Record Id', recordId);
+
+        deleteRecord(recordId)
+        .then(() =>{
+            this.showToast('Success', 'Record Delted Successfully', 'success');
+            refreshApex(this.incompleteTaskResult);
+        })
+        .catch(error => {
+            this.showToast('Error', 'Unable to Delete Record', 'error');
+        })
     }
 
     completeTaskHandler(event){
