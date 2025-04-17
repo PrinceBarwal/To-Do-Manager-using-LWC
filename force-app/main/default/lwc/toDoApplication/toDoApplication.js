@@ -6,6 +6,8 @@ import TASK_DATE from '@salesforce/schema/Task_Manager__c.Task_Date__c';
 import TASK_COMPLETED_DATE from '@salesforce/schema/Task_Manager__c.Completed_Date__c';
 import TASK_IS_COMPLETED from '@salesforce/schema/Task_Manager__c.isCompleted__c';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import loadAllInCompletedTask from '@salesforce/apex/toDoAppController.loadAllInCompletedTask'
+import loadAllCompletedTask from '@salesforce/apex/toDoAppController.loadAllCompletedTask'
 
 
 export default class ToDoApplication extends LightningElement {
@@ -61,6 +63,7 @@ export default class ToDoApplication extends LightningElement {
             //alert('inside then method');
             console.log('Task Created Successfully', result);
             this.showToast('Success', 'Task Manager Record Created Successfully', 'success');
+            this.resetHandler();
         })
         .catch(error => {
             //alert('inside catch method');
