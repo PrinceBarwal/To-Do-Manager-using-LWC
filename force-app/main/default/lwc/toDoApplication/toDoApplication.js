@@ -184,7 +184,7 @@ export default class ToDoApplication extends LightningElement {
         this.refreshData(index);
     }
 
-    async refreshData(recordId){
+    refreshData(recordId){
         console.log('inside the refresh Data');
         console.log('Record Id', recordId);
         // let removeItem = this.incompleteTask.splice(index, 1);
@@ -202,24 +202,26 @@ export default class ToDoApplication extends LightningElement {
             fields : inputFields
         }
 
-        try{
-            await updateRecord(recordInput);
-            await refreshApex(this.incompleteTaskResult);
-            await refreshApex(this.completeTaskResult);
-            this.showToast('Success', 'Record Update Successfully', 'success');
-        }
-        catch(error){
-            console.log('error',error);
-            this.showToast('Error', 'Unable to Udpate the Record', 'error');
-        }
-        // .then(result => {
+        // try{
+        //     await updateRecord(recordInput);
+        //     await refreshApex(this.incompleteTaskResult);
+        //     await refreshApex(this.completeTaskResult);
         //     this.showToast('Success', 'Record Update Successfully', 'success');
-        //     refreshApex(this.incompleteTaskResult);
-        //     refreshApex(this.completeTaskResult);
-        // })
-        // .catch(error => {
+        // }
+        // catch(error){
+        //     console.log('error',error);
         //     this.showToast('Error', 'Unable to Udpate the Record', 'error');
-        // })
+        // }
+
+        updateRecord(recordInput)
+        .then(result => {
+            this.showToast('Success', 'Record Update Successfully', 'success');
+            refreshApex(this.incompleteTaskResult);
+            refreshApex(this.completeTaskResult);
+        })
+        .catch(error => {
+            this.showToast('Error', 'Unable to Udpate the Record', 'error');
+        })
     }
 
     showToast(title, message, variant) {
