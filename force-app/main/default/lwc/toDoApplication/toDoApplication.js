@@ -1,10 +1,11 @@
-import { createRecord, deleteRecord } from 'lightning/uiRecordApi';
+import { createRecord, deleteRecord, updateRecord } from 'lightning/uiRecordApi';
 import { LightningElement, wire } from 'lwc';
 import TASK_MANAGER_OBJECT from '@salesforce/schema/Task_Manager__c';
 import TASK_MANAGER_NAME from '@salesforce/schema/Task_Manager__c.Name';
 import TASK_DATE from '@salesforce/schema/Task_Manager__c.Task_Date__c';
 import TASK_COMPLETED_DATE from '@salesforce/schema/Task_Manager__c.Completed_Date__c';
 import TASK_IS_COMPLETED from '@salesforce/schema/Task_Manager__c.isCompleted__c';
+import TASK_ID from '@salesforce/schema/Task_Manager__c.Id';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import loadAllInCompletedTask from '@salesforce/apex/toDoAppController.loadAllInCompletedTask'
 import loadAllCompletedTask from '@salesforce/apex/toDoAppController.loadAllCompletedTask'
@@ -162,8 +163,11 @@ export default class ToDoApplication extends LightningElement {
     }
 
     completeTaskHandler(event){
-        let index = event.target.name;
-        this.refreshData(index);
+        console.log('inside the complete Task handler');
+        // let index = event.target.name;
+        // this.refreshData(index);
+        let recordId = event.target.name;
+        this.refreshData(recordId);
         
     }
 
@@ -180,12 +184,42 @@ export default class ToDoApplication extends LightningElement {
         this.refreshData(index);
     }
 
-    refreshData(index){
-        let removeItem = this.incompleteTask.splice(index, 1);
-        let sortedArray = this.sortArray(this.incompleteTask);
-        this.incompleteTask = [...sortedArray];
-        //console.log("this.incompleteTask", this.incompleteTask);
-        this.completedTask = [...this.completedTask, removeItem[0]];
+    async refreshData(recordId){
+        console.log('inside the refresh Data');
+        console.log('Record Id', recordId);
+        // let removeItem = this.incompleteTask.splice(index, 1);
+        // let sortedArray = this.sortArray(this.incompleteTask);
+        // this.incompleteTask = [...sortedArray];
+        // //console.log("this.incompleteTask", this.incompleteTask);
+        // this.completedTask = [...this.completedTask, removeItem[0]];
+
+        let inputFields = {};
+        inputFields[TASK_ID.fieldApiName] = recordId;
+        inputFields[TASK_IS_COMPLETED.fieldApiName] = true;
+        inputFields[TASK_COMPLETED_DATE.fieldApiName] = new Date().toISOString().slice(0,10);
+
+        let recordInput = {
+            fields : inputFields
+        }
+
+        try{
+            await updateRecord(recordInput);
+            await refreshApex(this.incompleteTaskResult);
+            await refreshApex(this.completeTaskResult);
+            this.showToast('Success', 'Record Update Successfully', 'success');
+        }
+        catch(error){
+            console.log('error',error);
+            this.showToast('Error', 'Unable to Udpate the Record', 'error');
+        }
+        // .then(result => {
+        //     this.showToast('Success', 'Record Update Successfully', 'success');
+        //     refreshApex(this.incompleteTaskResult);
+        //     refreshApex(this.completeTaskResult);
+        // })
+        // .catch(error => {
+        //     this.showToast('Error', 'Unable to Udpate the Record', 'error');
+        // })
     }
 
     showToast(title, message, variant) {
