@@ -23,11 +23,11 @@
                 <div class="slds-var-p-around_small">
                     <template for:each={incompleteTask} for:item="currTask" for:index="index">
                         <div 
-                        key={currTask.taskName} 
+                        key={currTask.taskId} 
                         class="slds-box slds-theme_shade incomplete"
                         draggable="true"
                         ondragstart={dragStartHandler}
-                        data-item = {index}>
+                        data-item = {currTask.taskId}>
                             <div class="slds-grid slds-wrap">
                                 <div class="slds-col slds-size_8-of-12">
                                     <p class="formatTaskName">{currTask.taskName}</p>
@@ -39,10 +39,10 @@
                                 <div class="slds-col slds-size_4-of-12">
                                     <lightning-button-icon icon-name="utility:delete" alternative-text="Delete"
                                         class="slds-m-left_xx-small" title="Delete" onclick={removalHandler}
-                                        name={index}></lightning-button-icon>
+                                        name={currTask.taskId}></lightning-button-icon>
                                     <lightning-button-icon icon-name="utility:check" alternative-text="Complete"
                                         class="slds-m-left_xx-small" title="Delete" onclick={completeTaskHandler}
-                                        name={index}></lightning-button-icon>
+                                        name={currTask.taskId}></lightning-button-icon>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                     ondragover={allowDrop}
                     ondrop={dropElementHandler}>
                     <template for:each={completedTask} for:item="currTask">
-                        <div key={currTask.taskName} class="slds-box slds-theme_shade complete">
+                        <div key={currTask.taskId} class="slds-box slds-theme_shade complete">
                             <div>
                                 <p class="formatTaskName">{currTask.taskName}</p>
                                 <p>

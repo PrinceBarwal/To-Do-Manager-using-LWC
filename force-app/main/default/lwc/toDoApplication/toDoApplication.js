@@ -1,5 +1,5 @@
 import { createRecord } from 'lightning/uiRecordApi';
-import { LightningElement } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import TASK_MANAGER_OBJECT from '@salesforce/schema/Task_Manager__c';
 import TASK_MANAGER_NAME from '@salesforce/schema/Task_Manager__c.Name';
 import TASK_DATE from '@salesforce/schema/Task_Manager__c.Task_Date__c';
@@ -16,6 +16,36 @@ export default class ToDoApplication extends LightningElement {
     taskDate = null;
     incompleteTask = [];
     completedTask = [];
+
+
+    @wire(loadAllInCompletedTask)
+    wire_inCompleteRecord({data, error}){
+        if(data){
+            console.log('incompleted Record : ', data);
+            this.incompleteTask = data.map(currItem => ({
+                taskId : currItem.Id,
+                taskName : currItem.Name,
+                taskDate : currItem.Task_Date__c
+            }));
+        }
+        else if(error){
+            console.log('Error while retriving incomplete task record ' , error);
+        }
+    }
+
+    @wire(loadAllCompletedTask)
+    wire_completedRecord({data, error}){
+        if(data){
+            console.log('All Completed Task Record', data);
+            this.completedTask = data.map(currItem => ({
+                taskName : currItem.Name,
+                taskDate : currItem.Task_Date__c
+            }));
+        }
+        else if(error){
+            console.log('Error while retreving incomplete task record');
+        }
+    }
 
     changeHandler(event){
         let {name, value} = event.target;
